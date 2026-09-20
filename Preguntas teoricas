@@ -1,7 +1,0 @@
-Generalizaciones simbólicas: Las reglas o sintaxis de typescript se pueden enumerafr como: colocar: ";" al final de cada linea, utulizar "{}" para cada funcion, utilizar "()" para cada funcion. Y usar la palabras reservadas como: if, function, etc.
-
-Algunas de las buenas practicas: uso de tipos genericos "T" en funciones e interfaces. Restringir los genericos con extends. Mapear tipos 
-
-Que caracteristicas particulares que se creen que son mejores que otros lenguajes:
-TIpado estructural: Un objeto es compatible si tiene la misma forma/estructura sin importar el nombre o su clase.
-Superset de JS: Todo codigo Js es valido en TS.

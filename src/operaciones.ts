@@ -3,7 +3,7 @@ import type { Tarea } from "./tipos.ts";
 import {control,resolverEdicion} from "./validaciones.ts"
 import {imprimirtarea,mostrarCampo} from "./mostrar.ts";
 
-export async function agregarTarea() 
+export async function agregarTarea():Promise<Tarea> 
     {
         console.log("Estas creando una nueva tarea.\n");
         // Si tiene opciones validas y tambien es obligatorio entonces puede ser vacio.
@@ -53,7 +53,7 @@ export async function agregarTarea()
 
 
 
-export async function verTareas(listaDeTareas: Tarea[])
+export async function verTareas(listaDeTareas: Tarea[]): Promise<void>
     {
         if (control(listaDeTareas))
         {
@@ -92,7 +92,7 @@ export async function verTareas(listaDeTareas: Tarea[])
         }
     }
 
-export async function verDetalleTarea(listaDeTareas: Tarea[],indice: number)
+export async function verDetalleTarea(listaDeTareas: Tarea[],indice: number): Promise<void>
     {
         if (!listaDeTareas[indice-1]) 
         {
@@ -144,7 +144,7 @@ export async function verDetalleTarea(listaDeTareas: Tarea[],indice: number)
             
     }
 
-export async function buscarTareas(listaDeTareas: Tarea[])
+export async function buscarTareas(listaDeTareas: Tarea[]): Promise<void>
     {
         if (control(listaDeTareas))
         {

@@ -24,7 +24,8 @@ async function menu(): Promise<void>
             case 3: listaDeTareas.push(await agregarTarea()); 
              break;
             case 0: 
-             salir = true; break;
+             salir = true; 
+             break;
             default: console.log("Ingrese una opcion valida"); break;
         }
     }

@@ -4,7 +4,7 @@ import type { Tarea } from "./tipos.ts";
 import {esvacio} from "./validaciones.ts";
 
 
-export async function imprimirtarea(listaDeTareas: Tarea[],condicion: string | null,buscar:string | null) 
+export async function imprimirtarea(listaDeTareas: Tarea[],condicion: string | null,buscar:string | null): Promise<void>
     {
         const tareasFiltradas = [];
 
@@ -64,7 +64,7 @@ export async function imprimirtarea(listaDeTareas: Tarea[],condicion: string | n
     }
 
 
-export function mostrarCampo(mensaje: string,valor:string | Date| null ) 
+export function mostrarCampo(mensaje: string,valor:string | Date| null )
     {
         if(esvacio(valor))
         {
