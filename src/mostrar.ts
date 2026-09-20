@@ -53,13 +53,18 @@ export async function imprimirtarea(listaDeTareas: Tarea[],condicion: string | n
 
         console.log("¿Deseas ver los detalles de alguna? \n");
         console.log("Introduce el numero de la tarea o 0 para volver \n");
-        const entrada = (await rl.question("> ")).trim();
-        const indice = Number(entrada);
-        if (indice===0 || isNaN(indice) || indice>tareasFiltradas.length) 
+        let entrada = (await rl.question("> ")).trim();
+        // Number("") es 0, por eso se revisa el texto vacio aparte antes de convertir.
+        while (entrada === "" || isNaN(Number(entrada)) || Number(entrada)<0 || Number(entrada)>tareasFiltradas.length)
         {
-         return; //isNaN es true si no es numero auqnue parezca lo contrario. isNaN= Is not a number.
+            entrada = (await rl.question("Ingrese una opcion valida \n")).trim();
         }
-    
+        const indice = Number(entrada);
+        if (indice===0)
+        {
+         return;
+        }
+
         await verDetalleTarea(tareasFiltradas, indice);
     }
 

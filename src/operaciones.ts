@@ -65,7 +65,12 @@ export async function verTareas(listaDeTareas: Tarea[]): Promise<void>
         console.log("[3] En curso \n");
         console.log("[4] Terminadas \n");
         console.log("[0] Volver \n");
-        let opcion=Number(await rl.question(">"));
+        let entrada=await rl.question(">");
+        let opcion=Number(entrada);
+        if (entrada === "")
+        {
+            opcion=NaN;
+        }
         if (opcion === 0)
         { 
         return;
@@ -87,7 +92,7 @@ export async function verTareas(listaDeTareas: Tarea[]): Promise<void>
                 break;
                 
             default:
-                console.log("Ingrese una opcion valida \n");
+                 console.log("Ingrese una opcion valida \n");
                 break;
         }
     }
@@ -108,10 +113,10 @@ export async function verDetalleTarea(listaDeTareas: Tarea[],indice: number): Pr
         console.log(`Ultima edicion: ${listaDeTareas[indice-1].ultimaEdicion} \n`);
         mostrarCampo("Fecha de vencimiento", listaDeTareas[indice-1].fechaVencimiento);
         console.log("Si deseas editarla presione E o 0 para volver. \n");
-        let entrada=await rl.question(">");
-        while(entrada!="0" && entrada!="E" && entrada!="e")
+        let entrada = (await rl.question(">")).trim();
+        while (entrada !=="0" && entrada.toLowerCase()!=="e" || entrada==="") 
         {
-            entrada=await rl.question("Ingrese una opcion valida \n");
+            entrada = (await rl.question("Ingrese una opcion valida \n")).trim();
         }
         if(entrada==="0")
         {
