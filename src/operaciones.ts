@@ -1,4 +1,4 @@
-import { pedirDato,pedirFecha,rl } from "./entrada.ts";
+import { pedirDato,pedirFecha,pausa,pedirNumero } from "./entrada.ts";
 import type { Tarea } from "./tipos.ts";
 import {control,resolverEdicion} from "./validaciones.ts"
 import {imprimirtarea,mostrarCampo} from "./mostrar.ts";
@@ -46,7 +46,7 @@ export async function agregarTarea():Promise<Tarea>
             dificultad: Number(dificultadus) || 1
         };
         console.log("¡Datos guardados!.\n");
-        await rl.question("Presione cualquier tecla para continuar... \n");
+        await pausa("Presione cualquier tecla para continuar... \n");
 
         return nuevaTarea;
     }
@@ -65,13 +65,8 @@ export async function verTareas(listaDeTareas: Tarea[]): Promise<void>
         console.log("[3] En curso \n");
         console.log("[4] Terminadas \n");
         console.log("[0] Volver \n");
-        let entrada=await rl.question(">");
-        let opcion=Number(entrada);
-        if (entrada === "")
-        {
-            opcion=NaN;
-        }
-        if (opcion === 0)
+        let opcion=Number( await pedirNumero("> \n"));
+        if (opcion===0)
         { 
         return;
         }
@@ -113,15 +108,12 @@ export async function verDetalleTarea(listaDeTareas: Tarea[],indice: number): Pr
         console.log(`Ultima edicion: ${listaDeTareas[indice-1].ultimaEdicion} \n`);
         mostrarCampo("Fecha de vencimiento", listaDeTareas[indice-1].fechaVencimiento);
         console.log("Si deseas editarla presione E o 0 para volver. \n");
-        let entrada = (await rl.question(">")).trim();
-        while (entrada !=="0" && entrada.toLowerCase()!=="e" || entrada==="") 
-        {
-            entrada = (await rl.question("Ingrese una opcion valida \n")).trim();
-        }
+        let entrada =await pedirDato( ">  \n", ["E","0"],true);
         if(entrada==="0")
         {
-         return; 
+            return;
         }
+        
         console.log(`Estas editando la tarea: ${listaDeTareas[indice-1].titulo}  \n`);
         console.log("-Si deseas mantener los valores de un atributo, simplemente dejalo en blanco (no espacio) \n");
         console.log("-Si deseas dejar en blanco un atributo, escribe un espacio. \n");
@@ -145,7 +137,7 @@ export async function verDetalleTarea(listaDeTareas: Tarea[],indice: number): Pr
         }
         listaDeTareas[indice-1].ultimaEdicion=new Date();
         console.log("¡Datos guardados!\n");
-        await rl.question("Presiona cualquier tecla para continuar ...\n");
+        await pausa("Presiona cualquier tecla para continuar ...\n");
             
     }
 
@@ -155,7 +147,7 @@ export async function buscarTareas(listaDeTareas: Tarea[]): Promise<void>
         {
          return;
         }
-        let titulo= await rl.question("Ingrese el titulo de la tarea a buscar \n");
+        let titulo= await pedirDato("Ingrese el titulo de la tarea a buscar \n",null,false);
         // La condicion es null ya que no estamos imprimiendo todas las tareas o por condicion solo buscamos:
         await imprimirtarea(listaDeTareas,null,titulo);
 

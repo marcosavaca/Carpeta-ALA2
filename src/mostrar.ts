@@ -1,4 +1,4 @@
-import {rl} from "./entrada.ts"
+import { pedirNumero } from "./entrada.ts"
 import {verDetalleTarea} from "./operaciones.ts";
 import type { Tarea } from "./tipos.ts";
 import {esvacio} from "./validaciones.ts";
@@ -52,13 +52,8 @@ export async function imprimirtarea(listaDeTareas: Tarea[],condicion: string | n
         }
 
         console.log("¿Deseas ver los detalles de alguna? \n");
-        console.log("Introduce el numero de la tarea o 0 para volver \n");
-        let entrada = (await rl.question("> ")).trim();
-        // Number("") es 0, por eso se revisa el texto vacio aparte antes de convertir.
-        while (entrada === "" || isNaN(Number(entrada)) || Number(entrada)<0 || Number(entrada)>tareasFiltradas.length)
-        {
-            entrada = (await rl.question("Ingrese una opcion valida \n")).trim();
-        }
+        let entrada = await pedirNumero("Introduce el numero de la tarea o 0 para volver \n",0,tareasFiltradas.length);
+    
         const indice = Number(entrada);
         if (indice===0)
         {

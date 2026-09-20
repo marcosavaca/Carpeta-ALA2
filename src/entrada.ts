@@ -1,4 +1,4 @@
-import { createInterface } from "readline/promises";
+import { createInterface } from "node:readline/promises";
 export const rl = createInterface({ input: process.stdin, output: process.stdout });
 export async function pedirDato(mensaje: string, opcionesValidas: string[] | null, obligatorio:boolean): Promise<string> 
     {
@@ -46,4 +46,31 @@ export async function pedirFecha(mensaje:string,editar:boolean | null):Promise<s
         }
         console.log("Formato no valido. Usa el formato AAAA-MM-DD o presione Enter para omitir.\n");
         }
+    }
+export async function pedirNumero(mensaje: string, min?: number, max?: number): Promise<number> {
+    while (true) 
+    {
+        const entrada = (await rl.question(mensaje)).trim();
+        const numero = Number(entrada);
+
+        // Si no se pasa rango como argumento entonces es el menu.
+        if (min === undefined || max === undefined) 
+        {
+            return numero;
+        }
+        // Si me pasaron rango -> valido y reintento hasta que sea correct "" con Number es 0, por eso se pide !==""
+        if (entrada !== "" && !isNaN(numero) && numero >= min && numero <= max) 
+        {
+            return numero;
+        }
+        console.log(`Ingrese un numero entre ${min} y ${max}.\n`);
+    }
+}
+export async function pausa(mensaje: string): Promise<void> 
+{
+    await rl.question(mensaje);
+}
+export function cerrar(): void 
+    {
+     rl.close();
     }

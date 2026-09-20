@@ -1,4 +1,4 @@
-import{rl} from "./entrada.ts"
+import{cerrar,pedirNumero} from "./entrada.ts"
 import { verTareas, buscarTareas, agregarTarea } from "./operaciones.ts";
 import type { Tarea } from "./tipos.ts";
 
@@ -14,7 +14,7 @@ async function menu(): Promise<void>
         console.log("[2] Buscar una Tarea\n");
         console.log("[3] Agregar una Tarea\n");
         console.log("[0] Salir\n");
-        let opcion = Number(await rl.question(">"));
+        let opcion = Number(await pedirNumero(">\n"));
         switch (opcion) 
         {
             case 1: await verTareas(listaDeTareas); 
@@ -29,7 +29,7 @@ async function menu(): Promise<void>
             default: console.log("Ingrese una opcion valida"); break;
         }
     }
-    rl.close();   
+    cerrar();
 }
 
 menu();
