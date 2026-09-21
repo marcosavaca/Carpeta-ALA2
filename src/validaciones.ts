@@ -8,7 +8,7 @@ export function control(listaDeTareas: Tarea[]): boolean {
     }
     return false;
 }
-export  function esvacio(valor: string| Date | null): boolean
+export function esvacio(valor: string| Date | null): boolean
     {
         if(valor===null || valor===undefined)
         {
@@ -25,16 +25,30 @@ export  function esvacio(valor: string| Date | null): boolean
         // si no cumple que sea nulo o stirng y espacio en blanco entonces es falso.
         return false;
     }
-export function resolverEdicion(entrada: string, valorAnterior:string):string
+export function resolverEdicion(entrada: string, valorAnterior:string | null):string | null
     {
       // mantener
         if (entrada === "")
-        { 
+        {
         return valorAnterior;
         }
         //vaciar:
         if (entrada.trim() === ""){
         return "";
-        }          
+        }
         return entrada;// valor nuevo
     }
+export function resolverFecha(entrada: string, valorAnterior: Date | null): Date | null  //Despues de pedirFecha ya esta validado, esto es para editar o convertir a Date.
+{
+    if (entrada === "")
+    { 
+        return valorAnterior;
+    }      // mantener
+    if (entrada.trim() === "")
+    {
+     return null;      
+
+    }  // vaciar
+    const [anio, mes, dia] = entrada.split("-").map(Number);
+    return new Date(anio, mes - 1, dia);            // nueva fecha (-1 por que llega a 11 js.
+}

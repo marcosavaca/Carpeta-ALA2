@@ -1,6 +1,6 @@
 import { pedirDato,pedirFecha,pausa,pedirNumero } from "./entrada.ts";
 import type { Tarea } from "./tipos.ts";
-import {control,resolverEdicion} from "./validaciones.ts"
+import {control,resolverEdicion,resolverFecha} from "./validaciones.ts"
 import {imprimirtarea,mostrarCampo} from "./mostrar.ts";
 
 export async function agregarTarea():Promise<Tarea> 
@@ -11,12 +11,12 @@ export async function agregarTarea():Promise<Tarea>
         let descripcionus= await pedirDato("2. Descripción:\n", null, false);
         //Los que no pueden ser vascios y tienen valores por defecto a opciones validas se les coloca "".
         let estadous=await pedirDato( "3. Estado ([P]endiente/[E]n curso/[T]erminada/[C]ancelada):\n", ["P", "E", "T", "C",""], true);
-        let vencimiento = await pedirFecha("Ingrese fecha de vencimiento (AAAA-MM-DD) o presione Enter para omitir:\n",null);
-        let dificultadus = await pedirDato( "4. Dificultad ([1]/[2]/[3]):\n", ["1", "2", "3",""],true);
-        let fechaCreacionus = await pedirDato("¿Desea agregar fecha de creación? [S]í / [N]o:\n", ["S", "N"], true);
-        let ultimaEdicionus = await pedirDato("¿Desea agregar última edición? [S]í / [N]o:\n", ["S", "N"], true);
+        let vencimiento = await pedirFecha("4.Ingrese fecha de vencimiento (AAAA-MM-DD) o presione Enter para omitir:\n",null);
+        let dificultadus = await pedirDato( "5. Dificultad ([1]/[2]/[3]):\n", ["1", "2", "3",""],true);
+        let fechaCreacionus = await pedirDato("6.¿Desea agregar fecha de creación? [S]í / [N]o:\n", ["S", "N"], true);
+        let ultimaEdicionus = await pedirDato("7.¿Desea agregar última edición? [S]í / [N]o:\n", ["S", "N"], true);
          // Conclusión de fechas: Si eligió 'S', asigna Date(), de lo contrario null
-          let ultimaEdicionFinal,fechaCreacionFinal;
+        let ultimaEdicionFinal,fechaCreacionFinal;
         if(fechaCreacionus === "S")
         { 
           fechaCreacionFinal =new Date();
@@ -42,7 +42,7 @@ export async function agregarTarea():Promise<Tarea>
             estado: estadous ||"P",
             fechaCreacion: fechaCreacionFinal,
             ultimaEdicion:ultimaEdicionFinal,
-            fechaVencimiento: vencimiento,
+            fechaVencimiento: resolverFecha(vencimiento,null),
             dificultad: Number(dificultadus) || 1
         };
         console.log("¡Datos guardados!.\n");
@@ -64,8 +64,9 @@ export async function verTareas(listaDeTareas: Tarea[]): Promise<void>
         console.log("[2] Pendientes \n");
         console.log("[3] En curso \n");
         console.log("[4] Terminadas \n");
+        console.log("[5] Canceladas \n");
         console.log("[0] Volver \n");
-        let opcion=Number( await pedirNumero("> \n"));
+        let opcion= await pedirNumero("> \n",undefined,undefined);
         if (opcion===0)
         { 
         return;
@@ -85,7 +86,9 @@ export async function verTareas(listaDeTareas: Tarea[]): Promise<void>
             case 4:
                 await imprimirtarea(listaDeTareas,"T",null);
                 break;
-                
+            case 5:
+                await imprimirtarea(listaDeTareas,"C",null);
+                break;
             default:
                  console.log("Ingrese una opcion valida \n");
                 break;
@@ -105,7 +108,7 @@ export async function verDetalleTarea(listaDeTareas: Tarea[],indice: number): Pr
         mostrarCampo("Descripcion", listaDeTareas[indice-1].descripcion);
         console.log(`Estado: ${listaDeTareas[indice-1].estado} \n`);
         mostrarCampo("Fecha de creacion", listaDeTareas[indice-1].fechaCreacion);
-        console.log(`Ultima edicion: ${listaDeTareas[indice-1].ultimaEdicion} \n`);
+        mostrarCampo("Ultima edicion", listaDeTareas[indice-1].ultimaEdicion);
         mostrarCampo("Fecha de vencimiento", listaDeTareas[indice-1].fechaVencimiento);
         console.log("Si deseas editarla presione E o 0 para volver. \n");
         let entrada =await pedirDato( ">  \n", ["E","0"],true);
@@ -119,12 +122,12 @@ export async function verDetalleTarea(listaDeTareas: Tarea[],indice: number): Pr
         console.log("-Si deseas dejar en blanco un atributo, escribe un espacio. \n");
         // A los atributos que pueden sar vacios se les agrega a opciones validas un espacio: " ".
         const nuevaDescripcion= await pedirDato( "1. Descripción:\n", null, false);
-        const nuevoEstado=await pedirDato( "3. Estado ([P]endiente/[E]n curso/[T]erminada/[C]ancelada) o dejalo en blanco para mantener(no espacio) \n", ["P", "E", "T", "C",""], true);
+        const nuevoEstado=await pedirDato( "2. Estado ([P]endiente/[E]n curso/[T]erminada/[C]ancelada) o dejalo en blanco para mantener(no espacio) \n", ["P", "E", "T", "C",""], true);
         const nuevaDificultad = await pedirDato( "3. Dificultad ([1]/[2]/[3]) o dejalo en blanco para mantener(no espacio) \n", ["1", "2", "3",""],true);
-        const vencimiento=await pedirFecha("Ingrese fecha de vencimiento (AAAA-MM-DD)\n", true);
+        const vencimiento=await pedirFecha("4.Ingrese fecha de vencimiento (AAAA-MM-DD)\n", true);
         //vaciableS:
         listaDeTareas[indice-1].descripcion= resolverEdicion(nuevaDescripcion,listaDeTareas[indice-1].descripcion);
-        listaDeTareas[indice-1].fechaVencimiento = resolverEdicion(vencimiento,listaDeTareas[indice-1].fechaVencimiento);     
+        listaDeTareas[indice-1].fechaVencimiento = resolverFecha(vencimiento,listaDeTareas[indice-1].fechaVencimiento);     
         // no vaciables:
         if (nuevoEstado !== "")
         {     

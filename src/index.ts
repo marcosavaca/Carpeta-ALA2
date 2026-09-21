@@ -14,7 +14,7 @@ async function menu(): Promise<void>
         console.log("[2] Buscar una Tarea\n");
         console.log("[3] Agregar una Tarea\n");
         console.log("[0] Salir\n");
-        let opcion = Number(await pedirNumero(">\n"));
+        let opcion = await pedirNumero(">\n",undefined,undefined);
         switch (opcion) 
         {
             case 1: await verTareas(listaDeTareas); 

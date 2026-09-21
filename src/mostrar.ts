@@ -10,11 +10,12 @@ export async function imprimirtarea(listaDeTareas: Tarea[],condicion: string | n
 
         for (let i=0; i<listaDeTareas.length; i++) 
         {
-            if(buscar) //Si estamos buscando entonces en la variable buscar se tiene el titulo de la tarea a buscar.
+            if(buscar!==null) //Si estamos buscando entonces en la variable buscar se tiene el titulo de la tarea a buscar.
             {
-              if(listaDeTareas[i].titulo.toLowerCase().includes(buscar.toLowerCase())) 
+              if(buscar.trim() !== "" && listaDeTareas[i].titulo.toLowerCase().includes(buscar.toLowerCase())) 
                 {
                     //añadimos a la tarea filtrada.
+       
                  tareasFiltradas.push(listaDeTareas[i]);
                 }
             } 
@@ -45,10 +46,9 @@ export async function imprimirtarea(listaDeTareas: Tarea[],condicion: string | n
 
         for (let i=0;i<tareasFiltradas.length;i++) 
         {
-            if(listaDeTareas[i] && tareasFiltradas[i].titulo)
-            {
+        
             console.log(`${[i+ 1]} ${tareasFiltradas[i].titulo} \n`);
-            }
+            
         }
 
         console.log("¿Deseas ver los detalles de alguna? \n");
